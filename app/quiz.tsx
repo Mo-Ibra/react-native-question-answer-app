@@ -15,6 +15,7 @@ export default function Quiz() {
     currentQuestion,
     timeLeft,
     wrongAttempts,
+    questionsNumber,
     score,
     categoryName,
     selectedAnswer,
@@ -31,7 +32,7 @@ export default function Quiz() {
     return (
       <ResultScreen
         score={score}
-        total={questions.length}
+        total={questionsNumber}
         wrong={wrongAttempts}
         categoryName={categoryName}
         restart={restartGame}
@@ -54,7 +55,7 @@ export default function Quiz() {
 
         <TimerBox
           currentQuestion={currentQuestion}
-          questionNumber={questions.length}
+          questionNumber={questionsNumber}
           timeLeft={timeLeft}
         />
       </View>

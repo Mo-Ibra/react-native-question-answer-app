@@ -13,6 +13,8 @@ export function useQuiz() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [wrongAttempts, setWrongAttempts] = useState(0);
 
+  const [questionsNumber, setQuestionsNumber] = useState(5);
+
   const [defaultTime, setDefaultTime] = useState(10);
   const [timeLeft, setTimeLeft] = useState(10);
 
@@ -31,6 +33,8 @@ export function useQuiz() {
     try {
       const savedTime = await AsyncStorage.getItem("questionTime");
 
+      const savedQuestionsNumber = await AsyncStorage.getItem("questionsNumber");
+
       // If time is saved, use it
       if (savedTime) {
         const time = parseInt(savedTime);
@@ -38,7 +42,13 @@ export function useQuiz() {
         setTimeLeft(time);
       }
 
-      const questions = getQuestionsByCategory(categoryId, 5);
+      // If questions number is saved, use it
+      if (savedQuestionsNumber) {
+        const number = parseInt(savedQuestionsNumber);
+        setQuestionsNumber(number);
+      }
+
+      const questions = getQuestionsByCategory(categoryId, questionsNumber);
       setQuestions(questions);
       setLoading(false);
     } catch (error) {
@@ -125,6 +135,7 @@ export function useQuiz() {
     defaultTime,
     timeLeft,
     wrongAttempts,
+    questionsNumber,
     score,
     selectedAnswer,
     categoryName,

@@ -4,8 +4,10 @@ import { Alert } from "react-native";
 
 export function useProfile() {
   const [questionTime, setQuestionTime] = useState("10");
+  const [questionsNumber, setQuestionsNumber] = useState("5");
   const [tempTime, setTempTime] = useState("10");
-  const [isEditing, setIsEditing] = useState(false);
+  const [isTimeEditing, setIsTimeEditing] = useState(false);
+  const [isQuestionNumberEditing, setIsQuestionNumberEditing] = useState(false);
 
   const [stats, setStats] = useState<{
     totalGames: number;
@@ -25,6 +27,11 @@ export function useProfile() {
   const loadSettings = async () => {
     try {
       const savedTime = await AsyncStorage.getItem("questionTime");
+      const savedQuestionNumber = await AsyncStorage.getItem("questionsNumber");
+
+      if (savedQuestionNumber) {
+        setQuestionsNumber(savedQuestionNumber);
+      }
       if (savedTime) {
         setQuestionTime(savedTime);
         setTempTime(savedTime);
@@ -57,12 +64,30 @@ export function useProfile() {
     try {
       await AsyncStorage.setItem("questionTime", tempTime);
       setQuestionTime(tempTime);
-      setIsEditing(false);
+      setIsTimeEditing(false);
       Alert.alert("تم الحفظ", "تم تحديث وقت السؤال بنجاح");
     } catch {
       Alert.alert("خطأ", "حدث خطأ أثناء الحفظ");
     }
   };
+
+  const saveQuestionsNumber = async () => {
+    const questionsNum = parseInt(questionsNumber);
+
+    if (isNaN(questionsNum) || questionsNum < 5 || questionsNum > 20) {
+      Alert.alert("خطاء", "الرجاء إدخال عدد سؤالات بين 5 و 20");
+      return;
+    }
+
+    try {
+      await AsyncStorage.setItem("questionsNumber", questionsNumber);
+      setQuestionsNumber(questionsNumber);
+      setIsQuestionNumberEditing(false);
+      Alert.alert("تم الحفظ", "تم تحديث عدد الاسئلة بنجاح");
+    } catch {
+      Alert.alert("خطاء", "حدث خطاء اثناء الحفظ");
+    }
+  }
 
   const resetStats = async () => {
     Alert.alert(
@@ -90,12 +115,17 @@ export function useProfile() {
 
   return {
     questionTime,
+    questionsNumber,
     tempTime,
-    isEditing,
+    isTimeEditing,
+    isQuestionNumberEditing,
     stats,
     setTempTime,
-    setIsEditing,
+    setIsTimeEditing,
+    setQuestionsNumber,
+    setIsQuestionNumberEditing,
     saveTime,
+    saveQuestionsNumber,
     resetStats,
   };
 }

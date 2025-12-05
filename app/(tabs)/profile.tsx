@@ -4,16 +4,22 @@ import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileStats from "@/components/profile/ProfileStats";
 import QuestionTimeSetting from "@/components/profile/QuestionTimeSetting";
 import ExtraActions from "@/components/profile/ExtraActions";
+import QuestionNumberSetting from "@/components/profile/QuestionNumberSetting";
 
 export default function Profile() {
   const {
     questionTime,
+    questionsNumber,
     tempTime,
-    isEditing,
+    isTimeEditing,
+    isQuestionNumberEditing,
     stats,
     setTempTime,
-    setIsEditing,
+    setIsTimeEditing,
+    setQuestionsNumber,
+    setIsQuestionNumberEditing,
     saveTime,
+    saveQuestionsNumber,
     resetStats,
   } = useProfile();
 
@@ -32,10 +38,19 @@ export default function Profile() {
         <QuestionTimeSetting
           questionTime={questionTime}
           tempTime={tempTime}
-          isEditing={isEditing}
+          isEditing={isTimeEditing}
           setTempTime={setTempTime}
-          setIsEditing={setIsEditing}
+          setIsEditing={setIsTimeEditing}
           saveTime={saveTime}
+        />
+
+        {/* Question Number */}
+        <QuestionNumberSetting
+          questionsNumber={questionsNumber}
+          isQuestionNumberEditing={isQuestionNumberEditing}
+          setQuestionsNumber={setQuestionsNumber}
+          setIsQuestionNumberEditing={setIsQuestionNumberEditing}
+          saveQuestionsNumber={saveQuestionsNumber}
         />
 
         {/* Extra Actions */}
